@@ -36,5 +36,8 @@ public:
 	unsigned long filterOrder;
 	float filterGain;
 };
+
+#define SETUP_FILTER(name,inputs,outputs,gain) name.setInputCoefficients(inputs); name.setOutputCoefficients(outputs); name.setGain(gain)
+
 }
 #endif /* FILTER_H_ */

@@ -33,101 +33,87 @@ using namespace std;
 #define SAMPLE_RATE (44100)
 #define FRAMES_PER_BUFFER 1024
 
-typedef enum {
-	ROW1=697,
-	ROW2=770,
-	ROW3=852,
-	ROW4=941
-} DtmfRows;
-
-typedef enum {
-	COL1=1209,
-	COL2=1336,
-	COL3=1477,
-	COL4=1633
-} DtmfCols;
-
-
-typedef struct
+class DtmfPipeline : public Dsp::DspPipeline
 {
-    int N;
+	protected:
+	inline void configureDetector(float t_freq, Dsp::GoertzelDetector *ptr){
+		if (ptr == (Dsp::GoertzelDetector *)0) return;
 
-	float system_in[FRAMES_PER_BUFFER+FFT_ZERO_PADDING];
-	float system_out[FRAMES_PER_BUFFER+FFT_ZERO_PADDING];
-	float toneGen1Out, toneGen2Out, adder1Output;
+		ptr->setFramesPerBuffer( FRAMES_PER_BUFFER );
+		ptr->setSamplingRate( SAMPLE_RATE );
+		ptr->setTargetFrequency(t_freq);
+		ptr->setInput(&adder1Output);
+		ptr->init();
+	}
+public:
+	static const float DtmfRows[];
+	static const float DtmfCols[];
 
-	Dsp::Oscilator toneGenerator1;
-	Dsp::Oscilator toneGenerator2;
+	DtmfPipeline() : Dsp::DspPipeline(), toneGeneratorRow(), toneGeneratorCol(), signalAdder1(), adder1Output(0.0), toneGenRowOut(0.0), toneGenColOut(0.0) {
+
+	}
+
+	void prepare(){
+		SETUP_OSCILLATOR(toneGeneratorRow, 1.0, 697, SAMPLE_RATE);
+		SETUP_OSCILLATOR(toneGeneratorCol, 0.1, 1209, SAMPLE_RATE);
+		toneGeneratorRow.setOutput(&toneGenRowOut);
+		toneGeneratorRow.setFrequency(DtmfRows[0]);
+
+		toneGeneratorCol.setOutput(&toneGenColOut);
+		toneGeneratorCol.setFrequency(DtmfCols[0]);
+
+		signalAdder1.addInput(&toneGenRowOut);
+		signalAdder1.addInput(&toneGenColOut);
+		signalAdder1.setOutput(&adder1Output);
+
+		addBlock(&toneGeneratorRow);
+		addBlock(&toneGeneratorCol);
+		addBlock(&signalAdder1);
+
+		setOutputVarPtr(&adder1Output);
+
+		//Configure detectors
+		for (int i=0; i<4; i++) {
+			configureDetector(DtmfRows[i],&rowDetectors[i]);
+			addBlock(&rowDetectors[i]);
+			configureDetector(DtmfCols[i],&colDetectors[i]);
+			addBlock(&colDetectors[i]);
+		}
+	}
+//protected:
+	Dsp::Oscilator toneGeneratorRow, toneGeneratorCol;
 	Dsp::SignalAdder signalAdder1;
-	Dsp::DspPipeline pipeline1;
-	Dsp::GoertzelDetector row1Detector;
 
-//	Fft *fft_in;
-//	Fft *fft_out;
-} DspPipeline_s;
+	//Create Detector for each row and column
 
-void setDtmfOutput(DtmfRows row,DtmfCols col, DspPipeline_s *pipe){
-	pipe->toneGenerator1.setFrequency(row);
-	pipe->toneGenerator2.setFrequency(col);
-}
+	Dsp::GoertzelDetector rowDetectors[4]; //RowDetectors
+	Dsp::GoertzelDetector colDetectors[4]; //ColDetectors
 
-#define SETUP_FILTER(name,inputs,outputs,gain) name.setInputCoefficients(inputs); name.setOutputCoefficients(outputs); name.setGain(gain)
-#define SETUP_OSCILLATOR(name,g,f,s) name.setGain(g); name.setFrequency(f); name.setSampleRate(s);
+	float adder1Output, toneGenRowOut, toneGenColOut;
 
-void prepareDspPipeline(DspPipeline_s& data) {
-	data.N = FRAMES_PER_BUFFER;
+};
 
-	SETUP_OSCILLATOR(data.toneGenerator1, 1.0, 697, SAMPLE_RATE);
-	SETUP_OSCILLATOR(data.toneGenerator2, 0.1, 1209, SAMPLE_RATE);
-	data.toneGenerator1.setOutput(&data.toneGen1Out);
-	data.toneGenerator2.setOutput(&data.toneGen2Out);
-	setDtmfOutput(ROW1,COL3,&data);
-
-	data.signalAdder1.addInput(&data.toneGen1Out);
-	data.signalAdder1.addInput(&data.toneGen2Out);
-	data.signalAdder1.setOutput(&data.adder1Output);
-
-	data.row1Detector.setFramesPerBuffer(FRAMES_PER_BUFFER);
-	data.row1Detector.setSamplingRate(SAMPLE_RATE);
-	data.row1Detector.setTargetFrequency(ROW1);
-	data.row1Detector.setInput(&data.adder1Output);
-	data.row1Detector.init();
-
-	//PREPARE FFT variables
-/*	memset((void *)data.system_in,0,sizeof(float)*FRAMES_PER_BUFFER+FFT_ZERO_PADDING+1);
-	memset((void *)data.system_out,0,sizeof(float)*FRAMES_PER_BUFFER+FFT_ZERO_PADDING+1);
-
-	data.fft_in = new Fft(SAMPLE_RATE, FRAMES_PER_BUFFER+FFT_ZERO_PADDING, data.system_in);
-	data.fft_out = new Fft(SAMPLE_RATE, FRAMES_PER_BUFFER+FFT_ZERO_PADDING, data.system_out);*/
-
-	data.pipeline1.addBlock(&data.toneGenerator1);
-	data.pipeline1.addBlock(&data.toneGenerator2);
-	data.pipeline1.addBlock(&data.signalAdder1);
-	data.pipeline1.setOutputVarPtr(&data.adder1Output);
-	data.pipeline1.addBlock(&data.row1Detector);
-}
+const float DtmfPipeline::DtmfRows[] = {697,770,852,941};
+const float DtmfPipeline::DtmfCols[] = {1209,1336,1477,1633};
 
 int main(int argc, char *argv[]) {
 
 	Logger::logInfo("Starting application...\n");
-	DspPipeline_s data;
+	DtmfPipeline pipe;
 
 	Graphics::startGraphicsSystem(1200,768);
 	Fft::prepareFft();
 
-	prepareDspPipeline(data);
+	pipe.prepare();
 
-	Audio::startAudioSystem(SAMPLE_RATE,FRAMES_PER_BUFFER,&(data.pipeline1));
+	Audio::startAudioSystem(SAMPLE_RATE,FRAMES_PER_BUFFER,&pipe);
 
 	Pa_Sleep(1500);
 
-	if(data.row1Detector.detected()) Logger::logInfo("Row1 was detected!!!!");
+	if(pipe.rowDetectors[0].detected()) Logger::logInfo("Row1 was detected!!!!");
 	else Logger::logError("Row1 not detected!!!!");
 
-	data.row1Detector.clearDetectionFlag();
-
-//	delete data.fft_in;
-//	delete data.fft_out;
+	pipe.rowDetectors[0].clearDetectionFlag();
 
 	Fft::CleanupFft();
 
@@ -135,6 +121,4 @@ int main(int argc, char *argv[]) {
     Audio::terminatePortAudio();
 	return 0;
 }
-
-
 

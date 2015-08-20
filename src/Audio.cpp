@@ -85,9 +85,24 @@ namespace Audio {
 		return 0;
 	}
 
+	float audio_SAMPLE_RATE;
+	float audio_FRAMES_PER_BUFFER;
+
 	void startAudioSystem(unsigned long sampleRate, unsigned long framesPerBuffer,void *data) {
 		initPortAudio();
 		stream = Audio::openDefaultStream(sampleRate,framesPerBuffer,data,audioDspPipelineCallback);
 		Audio::startStream(stream);
+		audio_SAMPLE_RATE = sampleRate;
+		audio_FRAMES_PER_BUFFER = framesPerBuffer;
+	}
+
+	float getSampleRate()
+	{
+		return audio_SAMPLE_RATE;
+	}
+
+	float getFramesPerBuffer()
+	{
+		return audio_FRAMES_PER_BUFFER;
 	}
 }

@@ -32,6 +32,8 @@ public:
 	float getOutput();
 	bool validInputVar();
 	bool validOutputVar();
+	virtual void prepare();
+
 protected:
 	ProcessingBlockList processingBlocks;
 	float *input;

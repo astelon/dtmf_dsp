@@ -37,7 +37,7 @@ protected:
 	bool detection;
 	unsigned long detectionCount;
 	static const unsigned long DETECTION_COUNT_TARGET = 4;
-	static const float DETECTION_THRESHOLD = 97;
+	static const float DETECTION_THRESHOLD = 55;
 	float coeff;
 	float Q1;
 	float Q2;

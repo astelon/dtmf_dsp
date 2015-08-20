@@ -42,10 +42,14 @@ void GoertzelDetector::init(void)
   sine = sin(omega);
   cosine = cos(omega);
   coeff = 2.0 * cosine;
+
+#ifdef DEBUG_INFO
   Logger::logInfo("At GoertzelDetector::Init") << std::endl;
   Logger::logInfo("For SAMPLING_RATE = ") << samplingRate <<
   " N = " << N << " and FREQUENCY = " << targetFrequency << std::endl;
   Logger::logInfo("k = ") << k << " and coeff = " << coeff << std::endl << std::endl;
+#endif
+
   detection = false;
   preProcess();
 }
@@ -83,7 +87,7 @@ void GoertzelDetector::postProcess() {
 	float magnitude = sqrt( getMagnitudeSquared() );
 	if (magnitude >= DETECTION_THRESHOLD) detectionCount++;
 	if (detectionCount >= DETECTION_COUNT_TARGET) detection = true;
-	Logger::logInfo("Magnitude = ") << magnitude << " detCount = " << detectionCount << std::endl;
+	//Logger::logInfo("Magnitude = ") << magnitude << " detCount = " << detectionCount << std::endl;
 }
 
 bool GoertzelDetector::detected() {

@@ -196,7 +196,7 @@ AM_DEFAULT_VERBOSITY = 1
 AUTOCONF = ${SHELL} /home/astelon/workspace/DTMF/missing autoconf
 AUTOHEADER = ${SHELL} /home/astelon/workspace/DTMF/missing autoheader
 AUTOMAKE = ${SHELL} /home/astelon/workspace/DTMF/missing automake-1.14
-AWK = mawk
+AWK = gawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2

@@ -64,4 +64,5 @@ void DspPipeline::postProcess() {
 
 } /* namespace Dsp */
 
-
+void Dsp::DspPipeline::prepare() {
+}

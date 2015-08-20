@@ -43,5 +43,8 @@ protected:
 	double mGain;
 	float *output;
 };
+
+#define SETUP_OSCILLATOR(name,g,f,s) name.setGain(g); name.setFrequency(f); name.setSampleRate(s);
+
 }
 #endif /* OSCILATOR_H_ */

@@ -25,6 +25,11 @@ namespace Audio {
 	void startStream(PaStream* stream);
 
 	void stopStream(PaStream* stream);
+
+	float getSampleRate();
+
+	float getFramesPerBuffer();
+
 };
 
 
