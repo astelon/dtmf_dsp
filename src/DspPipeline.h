@@ -13,10 +13,6 @@
 
 namespace Dsp {
 
-extern "C" {
-	#include <portaudio.h>
-}
-
 class DspPipeline {
 public:
 	typedef std::vector<ProcessingBlock*> ProcessingBlockList;
