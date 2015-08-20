@@ -98,7 +98,8 @@ am_dtmf_dsp_OBJECTS = main.$(OBJEXT) Audio.$(OBJEXT) FFT.$(OBJEXT) \
 	Oscilator.$(OBJEXT) Plotter.$(OBJEXT) ring_buff.$(OBJEXT) \
 	SignalAdder.$(OBJEXT) TextPrinter.$(OBJEXT) \
 	ProcessingBlock.$(OBJEXT) DspPipeline.$(OBJEXT) \
-	GoertzelDetector.$(OBJEXT)
+	GoertzelDetector.$(OBJEXT) DtmfPipeline.$(OBJEXT) \
+	DtmfKeyboard.$(OBJEXT)
 dtmf_dsp_OBJECTS = $(am_dtmf_dsp_OBJECTS)
 dtmf_dsp_DEPENDENCIES =
 dtmf_dsp_LINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
@@ -271,7 +272,7 @@ target_vendor = unknown
 top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
-dtmf_dsp_SOURCES = main.cpp Audio.cpp FFT.cpp Modulator.cpp Filter.cpp Graphics.cpp Input.cpp Logger.cpp Lookup_sin.cpp Oscilator.cpp Plotter.cpp ring_buff.c SignalAdder.cpp TextPrinter.cpp ProcessingBlock.cpp DspPipeline.cpp GoertzelDetector.cpp
+dtmf_dsp_SOURCES = main.cpp Audio.cpp FFT.cpp Modulator.cpp Filter.cpp Graphics.cpp Input.cpp Logger.cpp Lookup_sin.cpp Oscilator.cpp Plotter.cpp ring_buff.c SignalAdder.cpp TextPrinter.cpp ProcessingBlock.cpp DspPipeline.cpp GoertzelDetector.cpp DtmfPipeline.cpp DtmfKeyboard.cpp
 dtmf_dsp_LDADD = -lfftw3f_threads -lfftw3f -lportaudio -lSDL_ttf -lSDL -lpthread -lm -lrt
 dtmf_dsp_LDFLAGS = -L/usr/lib/x86_64-linux-gnu -Wl,-rpath,/usr/lib/x86_64-linux-gnu
 all: all-am
@@ -363,6 +364,8 @@ distclean-compile:
 
 include ./$(DEPDIR)/Audio.Po
 include ./$(DEPDIR)/DspPipeline.Po
+include ./$(DEPDIR)/DtmfKeyboard.Po
+include ./$(DEPDIR)/DtmfPipeline.Po
 include ./$(DEPDIR)/FFT.Po
 include ./$(DEPDIR)/Filter.Po
 include ./$(DEPDIR)/GoertzelDetector.Po

@@ -121,7 +121,8 @@ main.o: main.cpp /usr/include/stdc-predef.h /usr/include/c++/4.9/iostream \
  /usr/local/include/SDL/SDL_timer.h /usr/local/include/SDL/SDL_version.h \
  /usr/include/SDL/SDL_ttf.h /usr/include/SDL/SDL.h \
  /usr/include/SDL/begin_code.h /usr/include/SDL/close_code.h Plotter.h \
- TextPrinter.h SignalAdder.h DspPipeline.h GoertzelDetector.h Logger.h
+ TextPrinter.h SignalAdder.h DspPipeline.h GoertzelDetector.h \
+ DtmfPipeline.h Logger.h
 
 /usr/include/stdc-predef.h:
 
@@ -476,5 +477,7 @@ SignalAdder.h:
 DspPipeline.h:
 
 GoertzelDetector.h:
+
+DtmfPipeline.h:
 
 Logger.h:
