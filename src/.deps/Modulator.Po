@@ -1,0 +1,10 @@
+Modulator.o: Modulator.cpp /usr/include/stdc-predef.h Modulator.h \
+ Oscilator.h ProcessingBlock.h
+
+/usr/include/stdc-predef.h:
+
+Modulator.h:
+
+Oscilator.h:
+
+ProcessingBlock.h:

@@ -1,0 +1,8 @@
+Modulator.o: ../../src/Modulator.cpp /usr/include/stdc-predef.h \
+ ../../src/Modulator.h ../../src/Oscilator.h
+
+/usr/include/stdc-predef.h:
+
+../../src/Modulator.h:
+
+../../src/Oscilator.h:

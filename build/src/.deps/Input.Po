@@ -1,0 +1,5 @@
+Input.o: ../../src/Input.cpp /usr/include/stdc-predef.h ../../src/Input.h
+
+/usr/include/stdc-predef.h:
+
+../../src/Input.h:
