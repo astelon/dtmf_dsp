@@ -12,11 +12,11 @@
 
 using namespace Dsp;
 
-Oscilator::Oscilator(double f) : output(0), mGain(1) {
+Oscilator::Oscilator(double f) : output(0), mGain(1), sampleTimeout(0) {
 	mFrequency = f; time = 0; mDeltaTime = 1;
 }
 
-Oscilator::Oscilator() : output(0), mGain(1) {
+Oscilator::Oscilator() : output(0), mGain(1), sampleTimeout(0) {
 	mFrequency = 0; time = 0; mDeltaTime = 1;
 }
 
@@ -41,6 +41,9 @@ void Oscilator::setSampleRate(double sampleRate) {
 
 void Oscilator::increaseTime(){
 	time += mDeltaTime;
+	if (sampleTimeout == 0) return;
+	sampleTimeout -= 1;
+	if (sampleTimeout == 0) setEnabled(false);
 }
 
 double Oscilator::getTime() const {
@@ -52,6 +55,10 @@ void Oscilator::setTime(double time) {
 }
 
 void Oscilator::process(){
+	if (!enabled) {
+		*output = 0.0;
+		return;
+	}
 		*output = getCurrentValue();
 		increaseTime();
 }
@@ -70,4 +77,8 @@ float* Oscilator::getOutput() const {
 
 void Oscilator::setOutput(float* output) {
 	this->output = output;
+}
+
+void Oscilator::setTimeOut(unsigned long samples) {
+	sampleTimeout = samples;
 }

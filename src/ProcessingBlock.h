@@ -17,6 +17,11 @@ public:
 	virtual void preProcess();
 	virtual void process() = 0;
 	virtual void postProcess();
+	bool isEnabled() const;
+	void setEnabled(bool enabled);
+
+protected:
+	bool enabled;
 };
 
 } /* namespace Dsp */

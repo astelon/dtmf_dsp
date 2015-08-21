@@ -9,7 +9,10 @@
 #define GOERTZELDETECTOR_H_
 
 #include "ProcessingBlock.h"
+#include <vector>
 namespace Dsp {
+
+typedef std::vector<unsigned short> DetectedIdList;
 
 class GoertzelDetector : public ProcessingBlock {
 public:
@@ -27,8 +30,12 @@ public:
 	void postProcess();
 	bool detected();
 	void clearDetectionFlag();
+	void setDetectedIdList(DetectedIdList *dList);
+	void setId(unsigned short n);
 
 protected:
+	DetectedIdList *detectedIdList;
+	unsigned short id;
 	unsigned long N;
 	float f;
 	float *input;
@@ -36,8 +43,9 @@ protected:
 	float targetFrequency;
 	bool detection;
 	unsigned long detectionCount;
-	static const unsigned long DETECTION_COUNT_TARGET = 4;
-	static const float DETECTION_THRESHOLD = 55;
+	unsigned long clearCount;
+	static const unsigned long DETECTION_COUNT_TARGET = 8;
+	static const float DETECTION_THRESHOLD = 45;
 	float coeff;
 	float Q1;
 	float Q2;

@@ -36,12 +36,15 @@ public:
 	float* getOutput() const;
 	void setOutput(float* output);
 
+	void setTimeOut(unsigned long samples);
+
 protected:
 	double mDeltaTime;
 	double mFrequency;
 	double time;
 	double mGain;
 	float *output;
+	unsigned long sampleTimeout;
 };
 
 #define SETUP_OSCILLATOR(name,g,f,s) name.setGain(g); name.setFrequency(f); name.setSampleRate(s);

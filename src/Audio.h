@@ -18,17 +18,17 @@ namespace Audio {
 
 	void terminatePortAudio();
 
-	void startAudioSystem(unsigned long sampleRate, unsigned long framesPerBuffer,void *data);
+	void startAudioSystem(void *data);
 
-	PaStream* openDefaultStream(unsigned long sampleRate, unsigned long framesPerBuffer, void* data,int callback(const void *, void *,unsigned long, const PaStreamCallbackTimeInfo*,PaStreamCallbackFlags,void *));
+	PaStream* openDefaultStream(void* data,int callback(const void *, void *,unsigned long, const PaStreamCallbackTimeInfo*,PaStreamCallbackFlags,void *));
 
 	void startStream(PaStream* stream);
 
 	void stopStream(PaStream* stream);
 
-	float getSampleRate();
+	const float getSampleRate();
 
-	float getFramesPerBuffer();
+	const float getFramesPerBuffer();
 
 };
 

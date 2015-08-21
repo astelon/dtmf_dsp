@@ -64,5 +64,5 @@ void DspPipeline::postProcess() {
 
 } /* namespace Dsp */
 
-void Dsp::DspPipeline::prepare(float sampleRate, float framesPerBuffer) {
+void Dsp::DspPipeline::prepare() {
 }

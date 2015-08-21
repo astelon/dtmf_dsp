@@ -11,6 +11,14 @@
 
 using namespace std;
 
+#ifndef SAMPLE_RATE
+#define SAMPLE_RATE (44100)
+#endif
+
+#ifndef FRAMES_PER_BUFFER
+#define FRAMES_PER_BUFFER 1024
+#endif
+
 namespace Audio {
 	PaStream *stream = NULL;
 
@@ -22,15 +30,15 @@ namespace Audio {
 			Logger::logError("PortAudio error:") << Pa_GetErrorText(err) << endl;
 	}
 
-	PaStream* openDefaultStream(unsigned long sampleRate, unsigned long framesPerBuffer, void* data,int callback(const void *, void *,unsigned long, const PaStreamCallbackTimeInfo*,PaStreamCallbackFlags,void *)) {
+	PaStream* openDefaultStream(void* data,int callback(const void *, void *,unsigned long, const PaStreamCallbackTimeInfo*,PaStreamCallbackFlags,void *)) {
 		PaStream* stream;
 
 		// Open an audio I/O stream.
 		PaError err = Pa_OpenDefaultStream(&stream, 1, // no input channels
 		1, // mono output
 		paFloat32, // 32 bit floating point output
-		sampleRate,
-		framesPerBuffer,//paFramesPerBufferUnspecified,
+		SAMPLE_RATE,
+		FRAMES_PER_BUFFER,//paFramesPerBufferUnspecified,
 		callback, // this is your callback function
 		data);
 		if (err != paNoError)
@@ -85,24 +93,19 @@ namespace Audio {
 		return 0;
 	}
 
-	float audio_SAMPLE_RATE;
-	float audio_FRAMES_PER_BUFFER;
-
-	void startAudioSystem(unsigned long sampleRate, unsigned long framesPerBuffer,void *data) {
+	void startAudioSystem(void *data) {
 		initPortAudio();
-		stream = Audio::openDefaultStream(sampleRate,framesPerBuffer,data,audioDspPipelineCallback);
+		stream = Audio::openDefaultStream(data,audioDspPipelineCallback);
 		Audio::startStream(stream);
-		audio_SAMPLE_RATE = sampleRate;
-		audio_FRAMES_PER_BUFFER = framesPerBuffer;
 	}
 
-	float getSampleRate()
+	const float getSampleRate()
 	{
-		return audio_SAMPLE_RATE;
+		return SAMPLE_RATE;
 	}
 
-	float getFramesPerBuffer()
+	const float getFramesPerBuffer()
 	{
-		return audio_FRAMES_PER_BUFFER;
+		return FRAMES_PER_BUFFER;
 	}
 }

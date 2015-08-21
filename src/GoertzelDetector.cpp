@@ -13,7 +13,7 @@
 
 namespace Dsp {
 
-GoertzelDetector::GoertzelDetector() : detectionCount(0), N(0), f(0), input(0), samplingRate(0.0),  targetFrequency(0.0),  detection(false), coeff(0.0), Q1(0.0), Q2(0.0), sine(0.0), cosine(0.0) {
+GoertzelDetector::GoertzelDetector() : id(4), clearCount(0), detectedIdList(0), detectionCount(0), N(0), f(0), input(0), samplingRate(0.0),  targetFrequency(0.0),  detection(false), coeff(0.0), Q1(0.0), Q2(0.0), sine(0.0), cosine(0.0) {
 	// TODO Auto-generated constructor stub
 
 }
@@ -86,8 +86,13 @@ void GoertzelDetector::process() {
 void GoertzelDetector::postProcess() {
 	float magnitude = sqrt( getMagnitudeSquared() );
 	if (magnitude >= DETECTION_THRESHOLD) detectionCount++;
-	if (detectionCount >= DETECTION_COUNT_TARGET) detection = true;
-	//Logger::logInfo("Magnitude = ") << magnitude << " detCount = " << detectionCount << std::endl;
+
+	if ((detectionCount >= DETECTION_COUNT_TARGET) && !detection) {
+		detection = true;
+		if(detectedIdList != 0) detectedIdList->push_back(id);
+	}
+
+	if (magnitude <= 10) clearDetectionFlag();
 }
 
 bool GoertzelDetector::detected() {
@@ -97,6 +102,14 @@ bool GoertzelDetector::detected() {
 void GoertzelDetector::clearDetectionFlag() {
 	detection = false;
 	detectionCount = 0;
+}
+
+void GoertzelDetector::setDetectedIdList(DetectedIdList* dList) {
+	detectedIdList = dList;
+}
+
+void GoertzelDetector::setId(unsigned short n) {
+	id = n;
 }
 
 } /* namespace Dsp */

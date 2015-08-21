@@ -94,12 +94,12 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_dtmf_dsp_OBJECTS = main.$(OBJEXT) Audio.$(OBJEXT) FFT.$(OBJEXT) \
 	Modulator.$(OBJEXT) Filter.$(OBJEXT) Graphics.$(OBJEXT) \
-	Input.$(OBJEXT) Logger.$(OBJEXT) Lookup_sin.$(OBJEXT) \
-	Oscilator.$(OBJEXT) Plotter.$(OBJEXT) ring_buff.$(OBJEXT) \
-	SignalAdder.$(OBJEXT) TextPrinter.$(OBJEXT) \
-	ProcessingBlock.$(OBJEXT) DspPipeline.$(OBJEXT) \
-	GoertzelDetector.$(OBJEXT) DtmfPipeline.$(OBJEXT) \
-	DtmfKeyboard.$(OBJEXT)
+	Logger.$(OBJEXT) Lookup_sin.$(OBJEXT) Oscilator.$(OBJEXT) \
+	Plotter.$(OBJEXT) ring_buff.$(OBJEXT) SignalAdder.$(OBJEXT) \
+	TextPrinter.$(OBJEXT) ProcessingBlock.$(OBJEXT) \
+	DspPipeline.$(OBJEXT) GoertzelDetector.$(OBJEXT) \
+	DtmfPipeline.$(OBJEXT) DtmfKeyboard.$(OBJEXT) \
+	DtmfCommunication.$(OBJEXT) TriangleDspWindow.$(OBJEXT)
 dtmf_dsp_OBJECTS = $(am_dtmf_dsp_OBJECTS)
 dtmf_dsp_DEPENDENCIES =
 dtmf_dsp_LINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
@@ -272,7 +272,7 @@ target_vendor = unknown
 top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
-dtmf_dsp_SOURCES = main.cpp Audio.cpp FFT.cpp Modulator.cpp Filter.cpp Graphics.cpp Input.cpp Logger.cpp Lookup_sin.cpp Oscilator.cpp Plotter.cpp ring_buff.c SignalAdder.cpp TextPrinter.cpp ProcessingBlock.cpp DspPipeline.cpp GoertzelDetector.cpp DtmfPipeline.cpp DtmfKeyboard.cpp
+dtmf_dsp_SOURCES = main.cpp Audio.cpp FFT.cpp Modulator.cpp Filter.cpp Graphics.cpp Logger.cpp Lookup_sin.cpp Oscilator.cpp Plotter.cpp ring_buff.c SignalAdder.cpp TextPrinter.cpp ProcessingBlock.cpp DspPipeline.cpp GoertzelDetector.cpp DtmfPipeline.cpp DtmfKeyboard.cpp DtmfCommunication.cpp TriangleDspWindow.cpp
 dtmf_dsp_LDADD = -lfftw3f_threads -lfftw3f -lportaudio -lSDL_ttf -lSDL -lpthread -lm -lrt
 dtmf_dsp_LDFLAGS = -L/usr/lib/x86_64-linux-gnu -Wl,-rpath,/usr/lib/x86_64-linux-gnu
 all: all-am
@@ -364,13 +364,13 @@ distclean-compile:
 
 include ./$(DEPDIR)/Audio.Po
 include ./$(DEPDIR)/DspPipeline.Po
+include ./$(DEPDIR)/DtmfCommunication.Po
 include ./$(DEPDIR)/DtmfKeyboard.Po
 include ./$(DEPDIR)/DtmfPipeline.Po
 include ./$(DEPDIR)/FFT.Po
 include ./$(DEPDIR)/Filter.Po
 include ./$(DEPDIR)/GoertzelDetector.Po
 include ./$(DEPDIR)/Graphics.Po
-include ./$(DEPDIR)/Input.Po
 include ./$(DEPDIR)/Logger.Po
 include ./$(DEPDIR)/Lookup_sin.Po
 include ./$(DEPDIR)/Modulator.Po
@@ -379,6 +379,7 @@ include ./$(DEPDIR)/Plotter.Po
 include ./$(DEPDIR)/ProcessingBlock.Po
 include ./$(DEPDIR)/SignalAdder.Po
 include ./$(DEPDIR)/TextPrinter.Po
+include ./$(DEPDIR)/TriangleDspWindow.Po
 include ./$(DEPDIR)/main.Po
 include ./$(DEPDIR)/ring_buff.Po
 

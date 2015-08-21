@@ -9,7 +9,7 @@
 
 namespace Dsp {
 
-ProcessingBlock::ProcessingBlock() {
+ProcessingBlock::ProcessingBlock() : enabled(true) {
 	// TODO Auto-generated constructor stub
 
 }
@@ -22,6 +22,14 @@ void ProcessingBlock::preProcess() {
 }
 
 void ProcessingBlock::postProcess() {
+}
+
+bool ProcessingBlock::isEnabled() const {
+	return enabled;
+}
+
+void ProcessingBlock::setEnabled(bool enabled) {
+	this->enabled = enabled;
 }
 
 } /* namespace Dsp */

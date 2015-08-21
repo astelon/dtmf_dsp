@@ -28,7 +28,7 @@ public:
 	float getOutput();
 	bool validInputVar();
 	bool validOutputVar();
-	virtual void prepare(float sampleRate, float framesPerBuffer);
+	virtual void prepare();
 
 protected:
 	ProcessingBlockList processingBlocks;
