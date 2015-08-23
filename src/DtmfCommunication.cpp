@@ -79,7 +79,9 @@ void DtmfCommunication::sendSymbol(char c) {
 	pipeline.toneGeneratorRow.setFrequency(Dsp::DtmfPipeline::DtmfRows[row]); pipeline.toneGeneratorCol.setFrequency(Dsp::DtmfPipeline::DtmfCols[col]);
 	pipeline.toneGeneratorRow.setTimeOut(symbolSize);
 	pipeline.toneGeneratorCol.setTimeOut(symbolSize);
+	pipeline.window.setToneDuration(symbolSize);
 	pipeline.enableOscilators(true);
+	pipeline.window.setEnabled(true);
 }
 
 InvalidSymbolException::InvalidSymbolException() : exception() {

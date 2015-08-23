@@ -35,12 +35,13 @@ void DtmfPipeline::prepare(){
 	addBlock(&toneGeneratorCol);
 	addBlock(&signalAdder1);
 
-	/*window.setInput(&adder1Output);
+	window.setInput(&adder1Output);
 	window.setOutput(&windowOut);
-	addBlock(&window);
-	setOutputVarPtr(&windowOut);*/
 
-	setOutputVarPtr(&adder1Output);
+	addBlock(&window);
+	setOutputVarPtr(&windowOut);
+
+//	setOutputVarPtr(&adder1Output);
 	setInputVarPtr(&systemInput);
 
 	//Configure detectors...

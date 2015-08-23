@@ -21,10 +21,11 @@ public:
 	virtual ~TriangleDspWindow();
 	void setInput(float* input);
 	void setOutput(float* output);
-
+	void setToneDuration(unsigned long duration);
+	void setEnabled(bool en);
 protected:
 	unsigned long sampleIdx;
-	unsigned long samplesPerFrame;
+	unsigned long toneLenght;
 	unsigned long halfWay;
 	float increment;
 	float coeficient;
